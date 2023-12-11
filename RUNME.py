@@ -1,8 +1,18 @@
 from src import timelog
 
 @timelog
-def some_function(arg, *args, kwarg, **kwargs):
-    return arg, *args, kwarg, *kwargs
+def some_function(some_argument, another_argument):
+    return
 
-some_function(1, *(2,3), kwarg=4, **{'5': 5, '6': 6})
+@timelog
+def another_function(some_input, another_input): 
+    return 
 
+some_function(1,2)
+some_function(3,4)
+another_function('a', 'b')
+another_function('c', 'd')
+some_function(1,2)
+some_function(3,4)
+another_function('a', 'b')
+another_function('c', 'd')
