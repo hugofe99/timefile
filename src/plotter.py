@@ -1,7 +1,8 @@
 import re
 from . import config
-import ast
+import json
 import matplotlib.pyplot as plt
+from . models import TimeLog, FunctionLogs, AllFunctionLogs
 
 
 def _plot_and_save(f_name: str, y: list, y_name: str, t: list, t_name: str = "time_delta"):
@@ -12,8 +13,8 @@ def _plot_and_save(f_name: str, y: list, y_name: str, t: list, t_name: str = "ti
     plt.savefig(f"{config.PLOT_DIR}/{f_name}_{y_name}.png")
 
 
-def timeplot():
-    functions = {}
+def _parse_logs() -> AllFunctionLogs:
+    functions = AllFunctionLogs()
     log_pattern = re.compile(r'(?P<timestamp>.*?) \[TIMEFILE\] \[(?P<function_name>.*?)\]: (?P<message>.*)')
     with open(config.LOG_FILEPATH, 'r') as log_file:
         for line in log_file:
@@ -22,9 +23,10 @@ def timeplot():
                 continue
 
             function_name = match.group('function_name')
-            if function_name not in functions:
-                functions[function_name] = []
+            time_log = TimeLog(**json.loads(match.group('message')))
+            functions.add_timelog(function_name=function_name, time_log=time_log)
+    return functions
 
-            message = match.group('message')
-            functions[function_name].append(message)
+def timeplot():
+    functions = _parse_logs()
     print(functions)

@@ -3,12 +3,9 @@ from typing import Callable
 import time
 from dataclasses import dataclass, asdict
 from . import config
+from .models import TimeLog
 from functools import wraps
 
-@dataclass
-class TimeLog:
-    kwargs: dict
-    time_delta: float
 
 def timelog(function: Callable) -> Callable:
     @wraps(function)
@@ -23,6 +20,6 @@ def timelog(function: Callable) -> Callable:
         kwargs.update(arg_kwargs)
 
         log = TimeLog(kwargs=kwargs, time_delta=time_delta)
-        logger.log(level=config.LOGGING_LEVEL_VALUE, msg=asdict(log))
+        logger.log(level=config.LOGGING_LEVEL_VALUE, msg=log.json_str())
         return _return
     return wrapper
