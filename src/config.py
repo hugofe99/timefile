@@ -1,5 +1,8 @@
 ### Config / Settings
 
+# DEBUG
+RESET = True
+
 # Logging
 LOGGING_LEVEL_VALUE = 22
 LOGGING_LEVEL_NAME = 'TIMEFILE'
