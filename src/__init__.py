@@ -1,5 +1,6 @@
 import logging
 import os
+import shutil
 import atexit
 from . import config
 from .logger import timelog
@@ -7,8 +8,9 @@ from .plotter import timeplot
 
 dirs = [config.LOG_DIR, config.PLOT_DIR]
 for dir in dirs:
-    if not os.path.exists(dir):
-        os.makedirs(dir)
+    if os.path.exists(dir) and config.RESET:
+        shutil.rmtree(dir)
+    os.makedirs(dir, exist_ok=True)
 
 
 logging.addLevelName(
