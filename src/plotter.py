@@ -13,6 +13,20 @@ def _plot_and_save(f_name: str, y: list, y_name: str, t: list, t_name: str = "ti
     plt.savefig(f"{config.PLOT_DIR}/{f_name}_{y_name}.png")
 
 
+def _plot_total(all_function_logs: AllFunctionLogs) -> None:
+    function_names = []
+    function_total_times = []
+    for function_logs in all_function_logs:
+        function_names.append(function_logs.function_name)
+        total_time = 0
+        for time_log in function_logs.time_logs:
+            total_time += time_log.time_delta
+        function_total_times.append(total_time)
+    fig, ax = plt.subplots()
+    ax.bar(function_names, function_total_times)
+    plt.show()
+
+
 def _parse_logs() -> AllFunctionLogs:
     functions = AllFunctionLogs()
     log_pattern = re.compile(r'(?P<timestamp>.*?) \[TIMEFILE\] \[(?P<function_name>.*?)\]: (?P<message>.*)')
@@ -29,4 +43,4 @@ def _parse_logs() -> AllFunctionLogs:
 
 def timeplot():
     functions = _parse_logs()
-    print(functions)
+    _plot_total(functions)
