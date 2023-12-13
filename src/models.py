@@ -1,10 +1,26 @@
 import json
 from typing import Any, Iterator
+import warnings
+from . config import MAX_LOG_WARNING
+import math
 
 class TimeLog:
-    def __init__(self, kwargs: dict[str, Any], time_delta: float) -> None:
+    _instances = {}
+    def __init__(self, kwargs: dict[str, Any], time_delta: float, _fn: str | None = None) -> None:
         self.kwargs = kwargs
         self.time_delta = time_delta
+
+        if not _fn:
+            return
+        
+        if _fn not in self.__class__._instances:
+            self.__class__._instances[_fn] = 1
+        self.__class__._instances[_fn] +=1 
+
+        if self.__class__._instances[_fn] > MAX_LOG_WARNING:
+            warning_message = f"\n\n WARNING: The function '{_fn}' has been logged > 10^{int(math.log10(MAX_LOG_WARNING))} times. This might affect performance. Consider an outer wrapper of these function calls :)"
+            warnings.warn(warning_message)
+    
 
     def json_str(self) -> str:
         return json.dumps(self.__dict__)
