@@ -10,7 +10,7 @@ import time
 
 dirs = [config.LOG_DIR, config.PLOT_DIR]
 for dir in dirs:
-    if os.path.exists(dir) and config.RESET:
+    if os.path.exists(dir) and config.RESET and dir == config.LOG_DIR:
         shutil.rmtree(dir)
     os.makedirs(dir, exist_ok=True)
 
