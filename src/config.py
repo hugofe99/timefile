@@ -4,6 +4,7 @@
 RESET = True
 
 # Logging
+TOTAL_RUNTIME = 'Total Runtime'
 LOGGING_LEVEL_VALUE = 22
 LOGGING_LEVEL_NAME = 'TIMEFILE'
 LOGGING_FORMAT = '%(asctime)s [%(levelname)s] [%(name)s]: %(message)s'
