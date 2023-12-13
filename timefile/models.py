@@ -37,6 +37,17 @@ class FunctionLogs:
             i = str(time_log.kwargs)[1:-1].replace(": ","=").replace("'","")
             s += f"T({self.function_name}({i})) = {time_log.time_delta}" + "\n"
         return s
+    
+    def as_series(self) -> dict:
+        series = {"time_delta": []}
+        for time_log in self.time_logs:
+            series["time_delta"].append(time_log.time_delta)
+            for k, v in time_log.kwargs.items():
+                if k not in series:
+                    series[k] = []
+                series[k].append(v)            
+        return series
+        
 
 class AllFunctionLogs:
     def __init__(self, all_function_logs: dict[str, FunctionLogs] = None) -> None:

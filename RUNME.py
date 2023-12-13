@@ -1,29 +1,14 @@
-from src import timelog
+from timefile import timelog
 import time
 
 @timelog
-def some_function(some_argument, another_argument):
-    time.sleep(0.01)
-    return
+def o_one(n):
+    time.sleep(n/10**4)
 
 @timelog
-def a_thing(some_input, another_input): 
-    time.sleep(0.02)
-    return 
+def o_two(m):
+    time.sleep(m**2/10**4)
 
-@timelog
-def foo(): 
-    time.sleep(0.02)
-    return
-
-@timelog
-def bar(): 
-    time.sleep(0.02)
-    return
-
-some_function(1,2)
-some_function(3,4)
-a_thing('a', 'b')
-foo()
-bar()
-
+for i in range(10):
+    o_one(i)
+    o_two(i)

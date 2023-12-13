@@ -13,7 +13,7 @@ LOGGING_FORMAT = '%(asctime)s [%(levelname)s] [%(name)s]: %(message)s'
 LOGGING_DATETIME = '%Y-%m-%d %H:%M:%S'
 
 # Files and Dirs
-TIMEFILE_DIR = './timefile'
+TIMEFILE_DIR = './timefiles'
 LOG_DIR = f'{TIMEFILE_DIR}/logs'
 PLOT_DIR = f'{TIMEFILE_DIR}/plots'
 LOG_FILENAME = 'timelogs.log'
