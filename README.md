@@ -1,7 +1,7 @@
 # ⏱️ timefile
 Probably the simplest time profiling in python 
 
-### 📍 Getting started
+## 📍 Getting started
 ```
 pip install timefile
 ```
@@ -23,12 +23,21 @@ for i in range(10):
     o_one(i)
     o_two(i)
 ```
-Check out the plots saved in **timefiles/plots/**
+Check out the plots saved in the **timefiles/plots/** directory for visualizations of the runtime.
 
-### 🍻 Feedback and Contributions
-I warmly welcome any bug reports, bug fixes, documentation improvements, enhancements, and ideas.
+## 🍻 Feedback and Contributions
+I warmly welcome any contributions, bug reports, bug fixes, documentation improvements, enhancements, and ideas.
+Feel free to create issues or pull requests at the [timefile GitHub](https://github.com/hugofe99/timefile).
+
+## 🛣️ Roadmap
+ - [ ] Documentation
+ - [ ] Small fixes / cleanup
+ - [ ] Performance improvements
+ - [ ] Prettier plots
+ - [ ] Multivariable plots?
+ - [ ] Simple regression or analysis? 
 
 ___
 
-### ⚠️ Performance 
-This package is built for simple runtime insight. For proper profiling in python check out more serious tools like cProfile, timeit, line_profiler, etc...
+#### ⚠️ Disclaimer 
+This package is designed for simple runtime insights and is **not** optmized for performance. For more comprehensive profiling in Python, consider using more robust tools like cProfile, timeit, line_profiler, etc.

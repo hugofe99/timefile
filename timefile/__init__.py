@@ -1,5 +1,7 @@
 from .logger import timelog
-__all__ = ['timelog']
+
+__all__ = ["timelog"]
+
 
 def __init__():
     import logging
@@ -17,20 +19,16 @@ def __init__():
             shutil.rmtree(dir)
         os.makedirs(dir, exist_ok=True)
 
-
     logging.addLevelName(
-        level=config.LOGGING_LEVEL_VALUE,
-        levelName=config.LOGGING_LEVEL_NAME
+        level=config.LOGGING_LEVEL_VALUE, levelName=config.LOGGING_LEVEL_NAME
     )
-
 
     logging.basicConfig(
         filename=config.LOG_FILEPATH,
         level=config.LOGGING_LEVEL_VALUE,
         format=config.LOGGING_FORMAT,
-        datefmt=config.LOGGING_DATETIME
+        datefmt=config.LOGGING_DATETIME,
     )
-
 
     def __log_total_runtime(start_time: float):
         logger = logging.getLogger(config.TOTAL_RUNTIME)
@@ -39,5 +37,6 @@ def __init__():
 
     atexit.register(timeplot)
     atexit.register(__log_total_runtime, start_time=time.perf_counter())
+
 
 __init__()
