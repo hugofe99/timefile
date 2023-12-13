@@ -30,6 +30,7 @@ I warmly welcome any contributions, bug reports, bug fixes, documentation improv
 Feel free to create issues or pull requests at the [timefile GitHub](https://github.com/hugofe99/timefile).
 
 ## 🛣️ Roadmap
+ - [ ] Tests !!!
  - [ ] Documentation
  - [ ] Small fixes / cleanup
  - [ ] Performance improvements

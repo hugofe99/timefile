@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "timefile"
+version = "0.1.1"
+description = "Probably the simplest time profiling in python"
+authors = ["hugofe99 <fernstrom.hugo@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/hugofe99/timefile"
+packages = [{include = "timefile"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+matplotlib = ">=3.8.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
