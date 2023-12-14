@@ -1,6 +1,6 @@
-from .logger import timelog
+from .logger import watch
 
-__all__ = ["timelog"]
+__all__ = ["watch"]
 
 
 def __init__():

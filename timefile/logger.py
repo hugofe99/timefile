@@ -1,14 +1,13 @@
 import logging
 from typing import Callable
 import time
-from dataclasses import dataclass, asdict
 from . import config
 from .models import TimeLog
 from functools import wraps
 from .helpers import filter_kwargs
 
 
-def timelog(function: Callable) -> Callable:
+def watch(function: Callable) -> Callable:
     @wraps(function)
     def wrapper(*args, **kwargs):
         logger = logging.getLogger(function.__name__)

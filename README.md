@@ -6,16 +6,16 @@ Probably the simplest time profiling in python
 pip install timefile
 ```
 
-To time your functions simply import <code>timelog</code> like this:
+To time your functions simply import <code>watch</code> like this:
 ```python
-from timefile import timelog
+from timefile import watch
 import time
 
-@timelog
+@watch
 def o_one(n):
     time.sleep(n/10**4)
 
-@timelog
+@watch
 def o_two(m):
     time.sleep(m**2/10**4)
 

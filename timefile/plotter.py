@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from .models import TimeLog, FunctionLogs, AllFunctionLogs
 from .helpers import string_to_rgb
 from datetime import datetime
-import numpy as np
 
 
 def _plot_and_save(
