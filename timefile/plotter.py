@@ -98,7 +98,7 @@ def _plot_total(all_function_logs: AllFunctionLogs) -> None:
 def _parse_logs() -> AllFunctionLogs:
     functions = AllFunctionLogs()
     log_pattern = re.compile(
-        r"(?P<timestamp>.*?) \[TIMEFILE\] \[(?P<function_name>.*?)\]: (?P<message>.*)"
+        r"(?P<timestamp>.*?) \[22\] \[(?P<function_name>.*?)\]: (?P<message>.*)"
     )
     with open(config.LOG_FILEPATH, "r") as log_file:
         for line in log_file:

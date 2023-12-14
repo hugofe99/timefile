@@ -1,4 +1,4 @@
-import logging
+import picologging as logging
 from typing import Callable
 import time
 from . import config
@@ -10,6 +10,7 @@ from .helpers import filter_kwargs
 def watch(function: Callable) -> Callable:
     @wraps(function)
     def wrapper(*args, **kwargs):
+        watch_start = time.perf_counter()
         logger = logging.getLogger(function.__name__)
         time_start = time.perf_counter()
         _return = function(*args, **kwargs)
@@ -20,7 +21,8 @@ def watch(function: Callable) -> Callable:
         kwargs = filter_kwargs(kwargs)
 
         log = TimeLog(kwargs=kwargs, time_delta=time_delta, _fn=function.__name__)
-        logger.log(level=config.LOGGING_LEVEL_VALUE, msg=log.json_str())
+        logger.log(config.LOGGING_LEVEL_VALUE, log.json_str())
+        logging.getLogger('watch').log(config.LOGGING_LEVEL_VALUE, TimeLog(kwargs={}, time_delta=time.perf_counter() - watch_start).json_str())
         return _return
 
     return wrapper
