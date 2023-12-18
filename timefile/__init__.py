@@ -4,7 +4,7 @@ __all__ = ["watch"]
 
 
 def __init__():
-    import picologging as logging
+    import logging
     import os
     import shutil
     import atexit
@@ -12,6 +12,7 @@ def __init__():
     from .models import TimeLog
     from .plotter import timeplot
     import time
+    from .exp import cleanup_log_queue_thread
 
     dirs = [config.LOG_DIR, config.PLOT_DIR]
     for dir in dirs:
@@ -19,13 +20,13 @@ def __init__():
             shutil.rmtree(dir)
         os.makedirs(dir, exist_ok=True)
 
-    # logging.addLevelName(
-    #     level=config.LOGGING_LEVEL_VALUE, levelName=config.LOGGING_LEVEL_NAME
-    # )
+    logging.addLevelName(
+        level=config.LOGGING_LEVEL_VALUE, levelName=config.LOGGING_LEVEL_NAME
+    )
 
     logging.basicConfig(
         filename=config.LOG_FILEPATH,
-        level=logging.INFO,
+        level=config.LOGGING_LEVEL_VALUE,
         format=config.LOGGING_FORMAT,
         datefmt=config.LOGGING_DATETIME,
     )
@@ -37,6 +38,7 @@ def __init__():
 
     atexit.register(timeplot)
     atexit.register(__log_total_runtime, start_time=time.perf_counter())
+    atexit.register(cleanup_log_queue_thread)
 
 
 __init__()

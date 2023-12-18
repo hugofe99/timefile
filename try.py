@@ -1,7 +1,10 @@
 from timefile import watch
 
+import time
+
 @watch
 def f1(a, b):
+    time.sleep(10**(-4))
     return a + b
 
 @watch
@@ -20,7 +23,7 @@ def n():
 #     return a + b
 
 n()
-for i in range(10**5):
+for i in range(10**4):
     f1(1,2)
     # f2(1,2)
     # f3(1,2)

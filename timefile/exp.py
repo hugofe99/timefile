@@ -2,13 +2,11 @@ from typing import Callable
 from functools import wraps
 from timefile.helpers import filter_kwargs
 import types
-import picologging as logging
+import logging
 import time
 from . models import TimeLog
 from . import config
 
-def _str(s):
-    return str(s)
 
 class NoMap:
     def __init__(self):
@@ -18,15 +16,38 @@ class NoMap:
 
 _nm = NoMap()
 
+
+
+import queue
+import threading
+import atexit
+
+
+log_queue = queue.Queue()
+
+def log_worker():
+    while True:
+        logger_name, log_record = log_queue.get()
+        if log_record is None:  # Signal to exit the thread
+            break
+        logger = logging.getLogger(logger_name)
+        logger.handle(log_record)
+        log_queue.task_done()
+
+
+log_thread = threading.Thread(target=log_worker)
+log_thread.daemon = True
+log_thread.start()
+
 def watch(mapping=_nm):
     def decorator(func: Callable):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            logger = logging.getLogger(func.__name__)
             time_start = time.perf_counter()
             result = func(*args, **kwargs)
             time_delta = time.perf_counter() - time_start
 
+            watch_start = time.perf_counter()
             if (func.__name__ == mapping.__name__):
                 arg_kwargs = {kw: arg for arg, kw in zip(args, func.__code__.co_varnames)}
                 kwargs.update(arg_kwargs)
@@ -37,10 +58,35 @@ def watch(mapping=_nm):
                 kwargs = {}
 
             log = TimeLog(kwargs=kwargs, time_delta=time_delta, _fn=func.__name__)
-            watch_start = time.perf_counter()
-            logger.info(log.json_str())
+            log_queue.put(
+                (
+                    func.__name__,
+                    logging.LogRecord(
+                        name=func.__name__, 
+                        level=config.LOGGING_LEVEL_VALUE, 
+                        pathname=None,
+                        lineno=None,
+                        msg=log.json_str(),
+                        args=None,
+                        exc_info=None
+                    )
+                )
+            )
             watch_delta = time.perf_counter() - watch_start
-            logging.getLogger('watch').log(config.LOGGING_LEVEL_VALUE, TimeLog(kwargs={}, time_delta=watch_delta).json_str())
+            log_queue.put(
+                (
+                    'watch',
+                    logging.LogRecord(
+                        name='watch', 
+                        level=config.LOGGING_LEVEL_VALUE, 
+                        pathname=None,
+                        lineno=None,
+                        msg=TimeLog(kwargs={}, time_delta=watch_delta).json_str(),
+                        args=None,
+                        exc_info=None
+                    )
+                )
+            )
             return result
         return wrapper
 
@@ -50,6 +96,12 @@ def watch(mapping=_nm):
         return decorator(mapping)
 
 
+def cleanup_log_queue_thread():
+    start = time.perf_counter()
+    log_queue.put((None, None))
+    log_thread.join()
+    delta = time.perf_counter() - start
+    print(f'Time to cleanup thread {delta}')
 
 
 # @watch

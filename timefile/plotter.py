@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from .models import TimeLog, FunctionLogs, AllFunctionLogs
 from .helpers import string_to_rgb
 from datetime import datetime
-
+from .exp import watch
 
 def _plot_and_save(
     f_name: str, y: list, y_name: str, t: list, t_name: str = "Time (s)"
@@ -94,11 +94,10 @@ def _plot_total(all_function_logs: AllFunctionLogs) -> None:
     )
     plt.close()
 
-
 def _parse_logs() -> AllFunctionLogs:
     functions = AllFunctionLogs()
     log_pattern = re.compile(
-        r"(?P<timestamp>.*?) \[22\] \[(?P<function_name>.*?)\]: (?P<message>.*)"
+        r"(?P<timestamp>.*?) \[TIMEFILE\] \[(?P<function_name>.*?)\]: (?P<message>.*)"
     )
     with open(config.LOG_FILEPATH, "r") as log_file:
         for line in log_file:
@@ -113,6 +112,12 @@ def _parse_logs() -> AllFunctionLogs:
 
 
 def timeplot():
+    import time
+
+    start = time.perf_counter()
+    parse_start_time = time.perf_counter()
     all_function_logs = _parse_logs()
     _plot_total(all_function_logs)
     _plot_each(all_function_logs)
+    delta = time.perf_counter() - start 
+    print(f' Time delta for parsing and plotting = {delta}')
